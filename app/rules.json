@@ -1,0 +1,32 @@
+{
+  "App is debuggable": {
+    "ISO27001": "A.14.2.1",
+    "GDPR": "Article 32",
+    "OWASP_MASVS": "MSTG-ARCH-2",
+    "recommendation": "Disable android:debuggable in release builds."
+  },
+  "Hardcoded API Keys": {
+    "ISO27001": "A.10.1",
+    "GDPR": "Article 32",
+    "OWASP_MASVS": "MSTG-STORAGE-1",
+    "recommendation": "Remove keys from code; use secure keystore or vault."
+  },
+  "Plaintext HTTP": {
+    "ISO27001": "A.13.2",
+    "GDPR": "Article 25",
+    "OWASP_MASVS": "MSTG-NETWORK-1",
+    "recommendation": "Use HTTPS/TLS; disable HTTP endpoints."
+  },
+  "Weak Cryptography": {
+    "ISO27001": "A.10.1",
+    "GDPR": "Article 32",
+    "OWASP_MASVS": "MSTG-CRYPTO-1",
+    "recommendation": "Avoid MD5/SHA1; use SHA-256 or better."
+  },
+  "WebView JS Enabled": {
+    "ISO27001": "A.14.2",
+    "GDPR": "Article 32",
+    "OWASP_MASVS": "MSTG-WEBVIEW-1",
+    "recommendation": "Avoid enabling JavaScript in WebView or validate trusted sources."
+  }
+}

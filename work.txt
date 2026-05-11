@@ -1,0 +1,20 @@
+2.4 Work Carried Out
+
+The project focused on developing an automated Governance and Risk Assessment tool using Static Application Security Testing (SAST) techniques for Android applications. The system was designed to detect common vulnerabilities within APK files and automatically map them to governance frameworks such as ISO 27001, GDPR, and OWASP MASVS.
+
+The backend was developed in Python using the Androguard library for APK decompilation and Bandit for code-level vulnerability scanning. Governance mapping was achieved using a custom JSON rule engine. The reporting module employed Jinja2, PDFKit, and python-docx for generating HTML, PDF, and Word reports with embedded charts and compliance recommendations.
+
+A web-based interface built using FastAPI, HTML, CSS, and Bootstrap 5 allows users to upload Android APKs, initiate static analysis, and download detailed audit reports. This integration successfully bridges the gap between technical vulnerability analysis and compliance-based reporting.
+
+Tools and Technologies Used
+Component	Tool / Technology	Purpose / Description
+Programming Language	Python 3.10	Core backend logic and automation
+Framework	FastAPI	Web framework for API and routing
+Static Analysis Library	Androguard	APK decompilation and manifest analysis
+Code Vulnerability Scanner	Bandit	Detects insecure coding practices
+Report Generation	PDFKit, XHTML2PDF, python-docx	Creates PDF, HTML, and Word reports
+Governance Mapping	Custom JSON Rule Engine	Maps vulnerabilities to ISO 27001, GDPR, OWASP MASVS
+Frontend	HTML5, CSS3, Bootstrap 5	Web interface for upload and visualization
+Visualization	Chart.js	Displays vulnerability severity and risk charts
+Development Environment	Visual Studio Code	IDE used for coding and testing
+Operating System	Windows 10/11	Development and testing environment

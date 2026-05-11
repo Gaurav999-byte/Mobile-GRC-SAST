@@ -1,0 +1,8 @@
+fastapi
+uvicorn
+Jinja2
+matplotlib
+pdfkit
+xhtml2pdf
+python-docx
+androguard

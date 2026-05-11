@@ -1,0 +1,141 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+
+<style>
+body {
+  font-family: Arial;
+  font-size: 10px;
+}
+
+/* HEADER */
+h2 {
+  text-align: center;
+  background: rgb(212, 220, 235);
+  color: white;
+  padding: 6px;
+}
+
+/* TABLE */
+table {
+  width: 60%;
+  border-collapse: collapse;
+}
+
+th, td {
+  border: 1px solid rgb(155, 231, 152);
+  padding: 6px;
+}
+
+th {
+  background: #ddd;
+}
+
+/* CENTER */
+.center {
+  text-align: center;
+}
+
+/* SEVERITY BADGES (FULL COLOR) */
+.critical {
+  background-color: #dc2626;
+  color: rgb(10, 10, 10);
+  text-align: center;
+  font-weight: bold;
+}
+
+.high {
+  background-color: #ea580c;
+  color: rgb(10, 10, 10);
+  text-align: center;
+  font-weight: bold;
+}
+
+.medium {
+  background-color: #ca8a04;
+  color: rgb(12, 12, 12);
+  text-align: center;
+  font-weight: bold;
+}
+
+.low {
+  background-color: #16a34a;
+  color: rgb(10, 9, 9);
+  text-align: center;
+  font-weight: bold;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<h1>Mobile Security Assessment Report </h1>
+
+<div class="center">
+    <h2>Severity Distribution</h2>
+    <img src="data:image/png;base64,{{ chart_base64 }}" style="width:400px;" />
+</div>
+</div>
+
+<h3>Severity Summary</h3>
+
+<table>
+<tr><th>Severity</th><th>Count</th></tr>
+
+<tr>
+<td class="critical">Critical</td>
+<td>{{ findings|selectattr("severity","equalto","Critical")|list|length }}</td>
+</tr>
+
+<tr>
+<td class="high">High</td>
+<td>{{ findings|selectattr("severity","equalto","High")|list|length }}</td>
+</tr>
+
+<tr>
+<td class="medium">Medium</td>
+<td>{{ findings|selectattr("severity","equalto","Medium")|list|length }}</td>
+</tr>
+
+<tr>
+<td class="low">Low</td>
+<td>{{ findings|selectattr("severity","equalto","Low")|list|length }}</td>
+</tr>
+
+</table>
+
+<h3>Findings</h3>
+
+<table>
+<tr>
+<th>Severity</th>
+<th>Issue</th>
+<th>Recommendation</th>
+</tr>
+
+{% for f in findings %}
+<tr>
+{% if f.severity == 'Critical' %}
+<td class="critical">Critical</td>
+{% elif f.severity == 'High' %}
+<td class="high">High</td>
+{% elif f.severity == 'Medium' %}
+<td class="medium">Medium</td>
+{% else %}
+<td class="low">Low</td>
+{% endif %}
+
+<!-- TEXT CUT (avoid merge) -->
+<td>{{ f.issue[:60] }}</td>
+<td>{{ f.recommendation[:80] }}</td>
+
+</tr>
+{% endfor %}
+
+</table>
+
+</body>
+</html>
