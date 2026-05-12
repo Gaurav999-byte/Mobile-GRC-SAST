@@ -1,47 +1,88 @@
 <!doctype html>
 <html lang="en">
+
 <head>
+
   <meta charset="utf-8">
+
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Report - {{ app_name }}</title>
+
+  <title>ML-Enhanced Security Report - {{ app_name }}</title>
 
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
   <style>
+
     body {
-      background:#f4f6f9;
+      background: #f4f6f9;
       font-family: "Segoe UI", sans-serif;
-      color:#1e293b;
+      color: #1e293b;
     }
 
     .header {
-      background:#0f172a;
-      color:#fff;
-      padding:20px;
-      border-radius:8px;
+      background: #0f172a;
+      color: #fff;
+      padding: 20px;
+      border-radius: 10px;
     }
 
     .section {
-      background:#fff;
-      padding:20px;
-      border-radius:10px;
-      box-shadow:0 2px 10px rgba(0,0,0,0.05);
-      margin-bottom:20px;
+      background: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+      margin-bottom: 20px;
     }
 
     .badge-custom {
-      color:#fff;
-      padding:6px 12px;
-      border-radius:6px;
-      font-size:13px;
+      color: #fff;
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 600;
     }
 
-    .critical { background:#dc2626; }
-    .high { background:#ea580c; }
-    .medium { background:#ca8a04; }
-    .low { background:#16a34a; }
+    .critical {
+      background: #dc2626;
+    }
+
+    .high {
+      background: #ea580c;
+    }
+
+    .medium {
+      background: #ca8a04;
+    }
+
+    .low {
+      background: #16a34a;
+    }
+
+    .ml-box {
+      background: #0f172a;
+      color: white;
+      border-radius: 10px;
+      padding: 15px;
+      text-align: center;
+    }
+
+    .confidence-high {
+      color: #16a34a;
+      font-weight: bold;
+    }
+
+    .confidence-medium {
+      color: #ca8a04;
+      font-weight: bold;
+    }
+
+    .confidence-low {
+      color: #dc2626;
+      font-weight: bold;
+    }
 
   </style>
+
 </head>
 
 <body>
@@ -50,99 +91,277 @@
 
   <!-- HEADER -->
   <div class="header mb-4">
-    <h3>Security Assessment Report</h3>
-    <small>Application: {{ app_name }}</small>
+
+    <h2>ML-Enhanced Governance and Risk Assessment of Mobile Applications</h2>
+
+    <h5 class="mt-2">
+      using Static Application Security Testing (SAST)
+    </h5>
+
+    <small>
+      Application: {{ app_name }}
+    </small>
+
   </div>
 
-  <!-- PIE CHART CENTER -->
+  <!-- PIE CHART -->
   <div class="section text-center">
-    <h5 class="mb-3">Severity Distribution</h5>
+
+    <h4 class="mb-3">
+      Severity Distribution
+    </h4>
+
     {% if chart_file %}
       <img src="/reports/{{ chart_file }}" style="width:350px;">
     {% endif %}
+
   </div>
 
   <!-- SUMMARY -->
   <div class="section text-center">
-    <h5 class="mb-4">Severity Summary</h5>
+
+    <h4 class="mb-4">
+      Vulnerability Summary
+    </h4>
 
     <div class="row">
 
       <div class="col">
-        <div class="badge-custom critical">Critical</div>
-        <h3 class="mt-2">{{ summary.Critical }}</h3>
+
+        <div class="badge-custom critical">
+          Critical
+        </div>
+
+        <h3 class="mt-2">
+          {{ summary.Critical }}
+        </h3>
+
       </div>
 
       <div class="col">
-        <div class="badge-custom high">High</div>
-        <h3 class="mt-2">{{ summary.High }}</h3>
+
+        <div class="badge-custom high">
+          High
+        </div>
+
+        <h3 class="mt-2">
+          {{ summary.High }}
+        </h3>
+
       </div>
 
       <div class="col">
-        <div class="badge-custom medium">Medium</div>
-        <h3 class="mt-2">{{ summary.Medium }}</h3>
+
+        <div class="badge-custom medium">
+          Medium
+        </div>
+
+        <h3 class="mt-2">
+          {{ summary.Medium }}
+        </h3>
+
       </div>
 
       <div class="col">
-        <div class="badge-custom low">Low</div>
-        <h3 class="mt-2">{{ summary.Low }}</h3>
+
+        <div class="badge-custom low">
+          Low
+        </div>
+
+        <h3 class="mt-2">
+          {{ summary.Low }}
+        </h3>
+
       </div>
 
     </div>
+
+  </div>
+
+  <!-- ML INFO -->
+  <div class="section">
+
+    <div class="ml-box">
+
+      <h4>
+        Machine Learning Enhanced Risk Prediction
+      </h4>
+
+      <p class="mt-3 mb-0">
+        Vulnerabilities are analyzed using a trained Random Forest
+        Machine Learning model for intelligent risk classification
+        and confidence-based prediction.
+      </p>
+
+    </div>
+
   </div>
 
   <!-- FINDINGS TABLE -->
   <div class="section">
-    <h5>Detailed Findings</h5>
 
-    <table class="table table-bordered mt-3">
+    <h4>
+      Detailed Security Findings
+    </h4>
+
+    <table class="table table-bordered table-hover mt-4">
+
       <thead class="table-light">
+
         <tr>
+
           <th>#</th>
+
           <th>Issue</th>
+
           <th>Severity</th>
+
+          <th>ML Prediction</th>
+
+          <th>ML Confidence</th>
+
           <th>ISO27001</th>
+
           <th>GDPR</th>
+
           <th>OWASP</th>
+
           <th>Recommendation</th>
+
         </tr>
+
       </thead>
 
       <tbody>
-        {% for f in findings %}
+
+      {% for f in findings %}
+
         <tr>
-          <td>{{ f.id }}</td>
-          <td>{{ f.issue }}</td>
 
           <td>
-            {% if f.severity == 'Critical' %}
-              <span class="badge-custom critical">Critical</span>
-            {% elif f.severity == 'High' %}
-              <span class="badge-custom high">High</span>
-            {% elif f.severity == 'Medium' %}
-              <span class="badge-custom medium">Medium</span>
-            {% else %}
-              <span class="badge-custom low">Low</span>
-            {% endif %}
+            {{ f.id }}
           </td>
 
-          <td>{{ f.iso27001 }}</td>
-          <td>{{ f.gdpr }}</td>
-          <td>{{ f.owasp }}</td>
-          <td>{{ f.recommendation }}</td>
+          <td>
+            {{ f.issue }}
+          </td>
+
+          <!-- SEVERITY -->
+          <td>
+
+            {% if f.severity == 'Critical' %}
+
+              <span class="badge-custom critical">
+                Critical
+              </span>
+
+            {% elif f.severity == 'High' %}
+
+              <span class="badge-custom high">
+                High
+              </span>
+
+            {% elif f.severity == 'Medium' %}
+
+              <span class="badge-custom medium">
+                Medium
+              </span>
+
+            {% else %}
+
+              <span class="badge-custom low">
+                Low
+              </span>
+
+            {% endif %}
+
+          </td>
+
+          <!-- ML PREDICTION -->
+          <td>
+
+            {{ f.ml_prediction }}
+
+          </td>
+
+          <!-- ML CONFIDENCE -->
+          <td>
+
+            {% if f.ml_confidence >= 80 %}
+
+              <span class="confidence-high">
+
+                {{ f.ml_confidence }}%
+
+              </span>
+
+            {% elif f.ml_confidence >= 50 %}
+
+              <span class="confidence-medium">
+
+                {{ f.ml_confidence }}%
+
+              </span>
+
+            {% else %}
+
+              <span class="confidence-low">
+
+                {{ f.ml_confidence }}%
+
+              </span>
+
+            {% endif %}
+
+          </td>
+
+          <td>
+            {{ f.iso27001 }}
+          </td>
+
+          <td>
+            {{ f.gdpr }}
+          </td>
+
+          <td>
+            {{ f.owasp }}
+          </td>
+
+          <td>
+            {{ f.recommendation }}
+          </td>
+
         </tr>
-        {% endfor %}
+
+      {% endfor %}
+
       </tbody>
+
     </table>
 
     <!-- DOWNLOAD BUTTONS -->
-    <div class="mt-3 text-end">
+    <div class="mt-4 text-end">
+
       {% if pdf_file %}
-        <a class="btn btn-dark" href="/reports/{{ pdf_file }}" target="_blank">Download PDF</a>
+        <a class="btn btn-dark"
+           href="/reports/{{ pdf_file }}"
+           target="_blank">
+
+          Download PDF
+
+        </a>
       {% endif %}
+
       {% if docx_file %}
-        <a class="btn btn-secondary" href="/reports/{{ docx_file }}" target="_blank">Download DOCX</a>
+        <a class="btn btn-secondary"
+           href="/reports/{{ docx_file }}"
+           target="_blank">
+
+          Download DOCX
+
+        </a>
       {% endif %}
+
     </div>
 
   </div>
@@ -150,4 +369,5 @@
 </div>
 
 </body>
+
 </html>
