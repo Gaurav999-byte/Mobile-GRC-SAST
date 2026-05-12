@@ -7,8 +7,21 @@ xhtml2pdf
 python-docx
 androguard
 python-multipart
-joblib
+
+# Machine Learning
 scikit-learn
+joblib
 numpy
 scipy
 threadpoolctl
+
+# FastAPI dependencies
+starlette
+pydantic
+
+# Template rendering
+markupsafe
+
+# Report generation support
+reportlab
+pillow

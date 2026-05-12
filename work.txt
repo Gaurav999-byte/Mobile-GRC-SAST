@@ -1,20 +1,36 @@
-2.4 Work Carried Out
+## 2.4 Work Carried Out
 
-The project focused on developing an automated Governance and Risk Assessment tool using Static Application Security Testing (SAST) techniques for Android applications. The system was designed to detect common vulnerabilities within APK files and automatically map them to governance frameworks such as ISO 27001, GDPR, and OWASP MASVS.
+The project focused on the design and development of an **ML-Enhanced Governance and Risk Assessment Platform for Mobile Applications using Static Application Security Testing (SAST)** techniques. The system was developed to perform automated security assessment of Android APK files by identifying common vulnerabilities, analyzing security risks, and generating compliance-oriented audit reports.
 
-The backend was developed in Python using the Androguard library for APK decompilation and Bandit for code-level vulnerability scanning. Governance mapping was achieved using a custom JSON rule engine. The reporting module employed Jinja2, PDFKit, and python-docx for generating HTML, PDF, and Word reports with embedded charts and compliance recommendations.
+The application performs static analysis on Android APK files to detect insecure configurations, exposed attack surfaces, hardcoded secrets, insecure communication mechanisms, backup vulnerabilities, and other common Android security weaknesses. The identified vulnerabilities are further mapped with internationally recognized governance and compliance frameworks such as **ISO 27001**, **GDPR**, and **OWASP MASVS/MSTG** standards.
 
-A web-based interface built using FastAPI, HTML, CSS, and Bootstrap 5 allows users to upload Android APKs, initiate static analysis, and download detailed audit reports. This integration successfully bridges the gap between technical vulnerability analysis and compliance-based reporting.
+The backend of the system was developed using **Python** and the **FastAPI** framework. APK analysis and manifest inspection functionalities were implemented using the **Androguard** library. A custom rule-based SAST engine was designed to analyze Android application components and detect predefined vulnerability patterns.
 
-Tools and Technologies Used
-Component	Tool / Technology	Purpose / Description
-Programming Language	Python 3.10	Core backend logic and automation
-Framework	FastAPI	Web framework for API and routing
-Static Analysis Library	Androguard	APK decompilation and manifest analysis
-Code Vulnerability Scanner	Bandit	Detects insecure coding practices
-Report Generation	PDFKit, XHTML2PDF, python-docx	Creates PDF, HTML, and Word reports
-Governance Mapping	Custom JSON Rule Engine	Maps vulnerabilities to ISO 27001, GDPR, OWASP MASVS
-Frontend	HTML5, CSS3, Bootstrap 5	Web interface for upload and visualization
-Visualization	Chart.js	Displays vulnerability severity and risk charts
-Development Environment	Visual Studio Code	IDE used for coding and testing
-Operating System	Windows 10/11	Development and testing environment
+To enhance the intelligence of the system, a **Machine Learning-assisted risk prediction module** was integrated using the **Random Forest algorithm**. The ML model predicts vulnerability severity levels and provides confidence scores for detected findings. The model was integrated using **Scikit-learn** and **Joblib** for model loading and prediction processing.
+
+The project also includes a governance mapping engine developed using a custom JSON-based rule system that automatically associates detected vulnerabilities with relevant compliance controls and recommendations. Automated reporting functionality was implemented using **Jinja2 templates**, **XHTML2PDF**, and **python-docx** to generate professional HTML, PDF, and DOCX audit reports with graphical visualizations and compliance summaries.
+
+A modern web-based dashboard was developed using **HTML5**, **CSS3**, **JavaScript**, and **Bootstrap-inspired responsive UI design** to provide an interactive user experience. The platform allows users to upload APK files, initiate automated scans, visualize vulnerability distributions, view ML-based risk predictions, and download detailed assessment reports.
+
+The completed system successfully bridges the gap between traditional static vulnerability analysis and governance-oriented risk assessment by integrating SAST methodologies, machine learning-based prediction, automated compliance mapping, and professional reporting into a unified platform.
+
+---
+
+# Tools and Technologies Used
+
+| Component               | Tool / Technology              | Purpose / Description                                |
+| ----------------------- | ------------------------------ | ---------------------------------------------------- |
+| Programming Language    | Python 3.11                    | Core backend development and automation              |
+| Backend Framework       | FastAPI                        | API development and web application routing          |
+| Static Analysis Library | Androguard                     | APK decompilation and Android manifest analysis      |
+| Machine Learning        | Scikit-learn (Random Forest)   | ML-based risk prediction and severity classification |
+| ML Model Handling       | Joblib                         | Loading and executing trained ML models              |
+| Data Processing         | NumPy, SciPy                   | ML and numerical processing support                  |
+| Governance Mapping      | Custom JSON Rule Engine        | Maps vulnerabilities to ISO 27001, GDPR, and OWASP   |
+| Report Generation       | Jinja2, XHTML2PDF, python-docx | Generates HTML, PDF, and DOCX reports                |
+| Frontend                | HTML5, CSS3, JavaScript        | Interactive web-based user interface                 |
+| User Interface Design   | Responsive Dashboard UI        | Modern upload dashboard and reporting interface      |
+| Visualization           | Matplotlib                     | Severity distribution and risk visualization charts  |
+| Development Environment | Visual Studio Code             | Development and testing environment                  |
+| Version Control         | Git & GitHub                   | Source code management and project hosting           |
+| Operating System        | Windows 10/11                  | Development and execution platform                   |

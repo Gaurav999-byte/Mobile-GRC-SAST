@@ -1,80 +1,117 @@
-# Mobile-GRC-SAST
+# ML-Enhanced Mobile Security Governance Platform
 
-## Governance and Risk Assessment of Mobile Application Using SAST
+## ML-Enhanced Governance and Risk Assessment of Mobile Applications Using SAST
 
-Mobile-GRC-SAST is a FastAPI-based cybersecurity tool developed for static analysis of Android APK applications. The project performs Governance, Risk Assessment, and Static Application Security Testing (SAST) to identify mobile application vulnerabilities and generate automated security reports.
+ML-Enhanced Mobile Security Governance Platform is a FastAPI-based cybersecurity and governance assessment system developed for automated Static Application Security Testing (SAST) of Android APK applications. The platform performs vulnerability detection, ML-assisted risk prediction, governance mapping, and automated compliance reporting for mobile applications.
 
 ---
 
-## Features
+# Project Overview
 
-- APK File Upload and Analysis
+The project focuses on identifying security vulnerabilities in Android APK files using Static Application Security Testing (SAST) techniques. The system analyzes uploaded APK files, detects common security weaknesses, classifies risks using Machine Learning-assisted prediction, and maps findings to governance and compliance frameworks such as:
+
+- ISO 27001
+- GDPR
+- OWASP MASVS / MSTG
+
+The platform also generates automated HTML, PDF, and DOCX security assessment reports with severity visualization and compliance recommendations.
+
+---
+
+# Features
+
+- Android APK Upload and Analysis
 - Static Application Security Testing (SAST)
-- Android APK Vulnerability Detection
-- Governance and Risk Mapping
-- Severity Classification (Critical, High, Medium, Low)
-- Interactive Dashboard and Charts
-- Automated PDF and DOCX Report Generation
-- OWASP/GRC-based Risk Analysis
+- ML-Based Risk Prediction
+- Vulnerability Severity Classification
+- Governance and Compliance Mapping
+- ISO 27001 / GDPR / OWASP Mapping
+- Interactive Security Dashboard
+- Severity Distribution Visualization
+- Automated PDF & DOCX Report Generation
+- Modern Responsive UI/UX
+- ML Confidence Scoring
+- Risk Assessment Reporting
 
 ---
 
-## Technologies Used
+# Technologies Used
 
-- Python 3.11
-- FastAPI
-- Androguard
-- HTML/CSS
-- Jinja2 Templates
-- Matplotlib
-- PDFKit
-- XHTML2PDF
-- Machine Learning Model
-
----
-
-## Project Workflow
-
-1. User uploads APK file
-2. APK is analyzed using static analysis
-3. Vulnerabilities are detected
-4. Findings are mapped to risk categories
-5. Severity summary and charts are generated
-6. PDF and DOCX reports are created automatically
+| Component | Technology |
+|---|---|
+| Programming Language | Python 3.11 |
+| Backend Framework | FastAPI |
+| Static Analysis | Androguard |
+| Machine Learning | Scikit-learn |
+| ML Model Handling | Joblib |
+| Frontend | HTML5, CSS3, JavaScript |
+| Templates | Jinja2 |
+| Visualization | Matplotlib |
+| PDF Generation | XHTML2PDF |
+| DOCX Generation | python-docx |
+| API Server | Uvicorn |
+| Version Control | Git & GitHub |
 
 ---
 
-## Installation
+# Project Workflow
 
-### Clone Repository
+1. User uploads Android APK file
+2. APK undergoes static security analysis
+3. Vulnerabilities and insecure configurations are detected
+4. Findings are mapped to governance frameworks
+5. ML model predicts risk severity and confidence score
+6. Severity charts and summaries are generated
+7. HTML, PDF, and DOCX reports are created automatically
+
+---
+
+# Installation
+
+## Clone Repository
 
 ```bash
 git clone https://github.com/Gaurav999-byte/Mobile-GRC-SAST.git
 cd Mobile-GRC-SAST
 ```
 
-### Create Virtual Environment
+---
+
+## Create Virtual Environment
 
 ```bash
 py -3.11 -m venv venv
+```
+
+---
+
+## Activate Virtual Environment
+
+### Windows
+
+```bash
 venv\Scripts\activate
 ```
 
-### Install Requirements
+---
+
+## Install Dependencies
 
 ```bash
 pip install -r requirements.txt
 ```
 
-### Run Project
+---
+
+# Run Project
 
 ```bash
-python -m uvicorn app.main:app --reload
+python run.py
 ```
 
 ---
 
-## Access Application
+# Access Application
 
 Open browser:
 
@@ -84,32 +121,74 @@ http://127.0.0.1:8000
 
 ---
 
-## Project Structure
+# Project Structure
 
 ```text
-app/
- ├── analyzer.py
- ├── predictor.py
- ├── reporter.py
- ├── riskmapper.py
- ├── templates/
- ├── static/
+Mobile-GRC-SAST/
+│
+├── app/
+│   ├── analyzer.py
+│   ├── predictor.py
+│   ├── reporter.py
+│   ├── riskmapper.py
+│   ├── main.py
+│   ├── rules.json
+│   │
+│   ├── templates/
+│   │   ├── index.html
+│   │   ├── report.html
+│   │   ├── report_preview.html
+│   │   └── report_pdf.html
+│   │
+│   └── static/
+│       └── css/
+│
+├── outputs/
+├── uploads/
+├── rf_model.pkl
+├── vectorizer.pkl
+├── requirements.txt
+├── run.py
+└── README.md
 ```
 
 ---
 
-## Future Enhancements
+# Machine Learning Integration
 
-- Dynamic Malware Analysis
-- Cloud Deployment
-- Real-time Threat Intelligence
-- Advanced ML-based Risk Prediction
-- Multi-platform Mobile Support
+The project integrates a Machine Learning-assisted risk prediction system using the Random Forest algorithm. The ML module predicts:
+
+- Vulnerability Severity
+- Risk Classification
+- Confidence Score
+
+This enhances traditional SAST analysis by introducing intelligent risk evaluation and automated severity assessment.
 
 ---
 
-## Author
+# Future Enhancements
 
-Gaurav Nagrale
+- Dynamic Malware Analysis
+- Real-Time Threat Intelligence
+- Cloud Deployment
+- Deep APK Reverse Engineering
+- Advanced ML Model Training
+- CVSS Score Integration
+- Scan History Management
+- Multi-Platform Mobile Support
+- Role-Based Access Control
 
-Cybersecurity Student | Software Engineer Intern | Ethical Hacking Enthusiast
+---
+
+# Author
+
+## Gaurav Nagrale
+
+Cybersecurity Student    
+Ethical Hacking & Security Research Enthusiast
+
+---
+
+# Disclaimer
+
+This project is developed strictly for educational, academic, and cybersecurity research purposes only.
