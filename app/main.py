@@ -105,7 +105,7 @@ async def scan(request: Request, file: UploadFile = File(...)):
         # =========================
         for item in mapped:
 
-            vuln_text = item.get("title", "")
+            vuln_text = item.get("issue", "")
 
             ml_result = predict_risk(vuln_text)
 

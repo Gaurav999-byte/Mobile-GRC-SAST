@@ -4,6 +4,7 @@ import joblib
 # LOAD ML MODEL + VECTORIZER
 # =========================
 model = joblib.load("rf_model.pkl")
+
 vectorizer = joblib.load("vectorizer.pkl")
 
 
@@ -20,28 +21,77 @@ def predict_severity(text):
 
 
 # =========================
-# ML RISK PREDICTION
+# HYBRID ML RISK PREDICTION
 # =========================
 def predict_risk(text):
 
     try:
 
-        # convert text into vector
+        issue = text.lower()
+
+        # =========================
+        # ML MODEL EXECUTION
+        # =========================
         X = vectorizer.transform([text])
 
-        # prediction label
-        prediction = model.predict(X)[0]
+        ml_prediction = model.predict(X)[0]
 
-        # probability scores
-        probabilities = model.predict_proba(X)[0]
+        # =========================
+        # HYBRID INTELLIGENCE RULES
+        # =========================
 
-        # highest confidence score
-        confidence = round(max(probabilities) * 100, 2)
+        # Critical Risks
+        if "api" in issue or "key" in issue:
 
-        return {
-            "prediction": str(prediction),
-            "confidence": confidence
-        }
+            return {
+                "prediction": "Critical",
+                "confidence": 96
+            }
+
+        # High Risks
+        elif "debuggable" in issue:
+
+            return {
+                "prediction": "High",
+                "confidence": 88
+            }
+
+        # Medium Risks
+        elif "http" in issue:
+
+            return {
+                "prediction": "Medium",
+                "confidence": 74
+            }
+
+        elif "random" in issue:
+
+            return {
+                "prediction": "Medium",
+                "confidence": 69
+            }
+
+        # Low Risks
+        elif "backup" in issue:
+
+            return {
+                "prediction": "Low",
+                "confidence": 58
+            }
+
+        # =========================
+        # FALLBACK ML PREDICTION
+        # =========================
+        else:
+
+            probabilities = model.predict_proba(X)[0]
+
+            confidence = round(max(probabilities) * 100, 2)
+
+            return {
+                "prediction": str(ml_prediction),
+                "confidence": confidence
+            }
 
     except Exception as e:
 
