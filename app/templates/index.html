@@ -1,138 +1,794 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
     <meta charset="UTF-8" />
-    <title>Mobile GRC – APK Security Scanner</title>
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0"/>
+
+    <title>
+        ML-Enhanced Governance and Risk Assessment
+    </title>
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
 
     <style>
-        body {
+
+        * {
             margin: 0;
             padding: 0;
-            background: linear-gradient(135deg, #0f172a, #1e293b, #0f172a);
-            background-size: 400% 400%;
-            animation: gradientShift 18s ease infinite;
-            font-family: "Segoe UI", Arial, sans-serif;
-            color: #e2e8f0;
+            box-sizing: border-box;
         }
 
-        @keyframes gradientShift {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
+        body {
+
+            font-family: "Segoe UI", sans-serif;
+
+            background:
+            linear-gradient(
+                135deg,
+                #0f172a 0%,
+                #111827 40%,
+                #1e293b 100%
+            );
+
+            color: white;
+
+            min-height: 100vh;
+
+            overflow-x: hidden;
         }
 
-        .container {
-            max-width: 800px;
-            margin: 80px auto;
-            padding: 20px;
+        body::before {
+
+            content: "";
+
+            position: fixed;
+
+            width: 500px;
+            height: 500px;
+
+            background: rgba(59,130,246,0.12);
+
+            border-radius: 50%;
+
+            top: -150px;
+            right: -100px;
+
+            filter: blur(100px);
+
+            z-index: 0;
+        }
+
+        body::after {
+
+            content: "";
+
+            position: fixed;
+
+            width: 400px;
+            height: 400px;
+
+            background: rgba(16,185,129,0.12);
+
+            border-radius: 50%;
+
+            bottom: -120px;
+            left: -80px;
+
+            filter: blur(100px);
+
+            z-index: 0;
+        }
+
+        .wrapper {
+
+            position: relative;
+
+            z-index: 1;
+
+            max-width: 1200px;
+
+            margin: auto;
+
+            padding: 40px 25px 60px;
+        }
+
+        .hero {
+
             text-align: center;
+
+            margin-top: 40px;
         }
 
-        .logo {
-            font-size: 42px;
-            font-weight: bold;
-            margin-bottom: 10px;
-            color: #60a5fa;
-            letter-spacing: 1px;
-            text-shadow: 0 0 15px rgba(96,165,250,0.4);
-        }
+        .badge {
 
-        .subtitle {
-            font-size: 18px;
-            color: #cbd5e1;
-            margin-bottom: 50px;
-        }
+            display: inline-flex;
 
-        .card {
-            background: rgba(255, 255, 255, 0.06);
-            backdrop-filter: blur(18px);
-            padding: 45px;
-            border-radius: 20px;
+            align-items: center;
+
+            gap: 10px;
+
+            background: rgba(255,255,255,0.08);
+
             border: 1px solid rgba(255,255,255,0.12);
-            box-shadow: 0 0 25px rgba(0,0,0,0.4);
-            transition: 0.3s ease;
-        }
-        .card:hover {
-            transform: translateY(-6px);
-            box-shadow: 0 0 35px rgba(0,0,0,0.55);
+
+            padding: 10px 20px;
+
+            border-radius: 50px;
+
+            color: #93c5fd;
+
+            font-size: 14px;
+
+            margin-bottom: 28px;
+
+            backdrop-filter: blur(10px);
         }
 
-        .upload-label {
-            display: inline-block;
-            background: #3b82f6;
-            padding: 14px 26px;
-            border-radius: 12px;
-            font-size: 16px;
+        .hero h1 {
+
+            font-size: 56px;
+
+            line-height: 1.15;
+
+            margin-bottom: 18px;
+
+            font-weight: 800;
+
+            letter-spacing: -1px;
+        }
+
+        .gradient-text {
+
+            background:
+            linear-gradient(
+                90deg,
+                #60a5fa,
+                #34d399
+            );
+
+            -webkit-background-clip: text;
+
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+
+            max-width: 850px;
+
+            margin: auto;
+
+            color: #cbd5e1;
+
+            line-height: 1.8;
+
+            font-size: 18px;
+        }
+
+        .dashboard-card {
+
+            margin-top: 55px;
+
+            background: rgba(255,255,255,0.06);
+
+            border: 1px solid rgba(255,255,255,0.1);
+
+            border-radius: 28px;
+
+            padding: 45px;
+
+            backdrop-filter: blur(16px);
+
+            box-shadow:
+            0 10px 40px rgba(0,0,0,0.35);
+        }
+
+        .features {
+
+            display: grid;
+
+            grid-template-columns:
+            repeat(auto-fit, minmax(220px, 1fr));
+
+            gap: 22px;
+
+            margin-bottom: 40px;
+        }
+
+        .feature {
+
+            background:
+            rgba(255,255,255,0.05);
+
+            border-radius: 20px;
+
+            padding: 25px;
+
+            transition: 0.35s;
+
+            border:
+            1px solid rgba(255,255,255,0.06);
+        }
+
+        .feature:hover {
+
+            transform:
+            translateY(-6px);
+
+            background:
+            rgba(255,255,255,0.08);
+
+            border-color:
+            rgba(96,165,250,0.35);
+        }
+
+        .icon-box {
+
+            width: 58px;
+            height: 58px;
+
+            border-radius: 18px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-size: 24px;
+
+            margin-bottom: 18px;
+
+            color: white;
+        }
+
+        .blue {
+            background:
+            linear-gradient(
+            135deg,
+            #2563eb,
+            #60a5fa);
+        }
+
+        .green {
+            background:
+            linear-gradient(
+            135deg,
+            #059669,
+            #34d399);
+        }
+
+        .orange {
+            background:
+            linear-gradient(
+            135deg,
+            #ea580c,
+            #fb923c);
+        }
+
+        .purple {
+            background:
+            linear-gradient(
+            135deg,
+            #7c3aed,
+            #a78bfa);
+        }
+
+        .feature h3 {
+
+            margin-bottom: 10px;
+
+            font-size: 19px;
+        }
+
+        .feature p {
+
+            color: #cbd5e1;
+
+            line-height: 1.6;
+
+            font-size: 14px;
+        }
+
+        .upload-area {
+
+            background:
+            linear-gradient(
+                135deg,
+                rgba(15,23,42,0.9),
+                rgba(30,41,59,0.95)
+            );
+
+            border-radius: 24px;
+
+            padding: 50px;
+
+            text-align: center;
+
+            border:
+            1px solid rgba(255,255,255,0.08);
+        }
+
+        .upload-title {
+
+            font-size: 34px;
+
+            margin-bottom: 12px;
+
+            font-weight: 700;
+        }
+
+        .upload-sub {
+
+            color: #cbd5e1;
+
+            margin-bottom: 35px;
+
+            line-height: 1.7;
+        }
+
+        .upload-btn {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 12px;
+
+            background:
+            linear-gradient(
+                135deg,
+                #2563eb,
+                #3b82f6
+            );
+
+            color: white;
+
+            padding: 18px 36px;
+
+            border-radius: 18px;
+
             cursor: pointer;
-            margin-bottom: 25px;
-            transition: 0.2s;
-            color: #fff;
-            box-shadow: 0 4px 18px rgba(59,130,246,0.35);
+
+            font-weight: 600;
+
+            font-size: 16px;
+
+            transition: 0.3s;
+
+            box-shadow:
+            0 10px 30px rgba(37,99,235,0.35);
         }
 
-        .upload-label:hover {
-            background: #2563eb;
-            box-shadow: 0 6px 22px rgba(37,99,235,0.45);
+        .upload-btn:hover {
+
+            transform:
+            translateY(-4px);
+
+            box-shadow:
+            0 14px 35px rgba(37,99,235,0.45);
         }
 
         input[type="file"] {
             display: none;
         }
 
-        .scan-btn {
-            padding: 14px 34px;
-            background: #10b981;
-            border: none;
-            border-radius: 12px;
-            font-size: 17px;
-            color: white;
-            cursor: pointer;
-            transition: 0.3s;
-            box-shadow: 0 4px 18px rgba(16,185,129,0.35);
-        }
-        .scan-btn:hover {
-            background: #059669;
-            box-shadow: 0 6px 22px rgba(5,150,105,0.45);
+        .file-box {
+
+            margin-top: 20px;
+
+            padding: 15px;
+
+            border-radius: 14px;
+
+            background:
+            rgba(255,255,255,0.05);
+
+            color: #93c5fd;
+
+            font-size: 15px;
+
+            min-height: 24px;
         }
 
-        .scan-btn:active {
-            background: #047857;
+        .scan-btn {
+
+            margin-top: 28px;
+
+            border: none;
+
+            background:
+            linear-gradient(
+                135deg,
+                #10b981,
+                #34d399
+            );
+
+            color: white;
+
+            padding: 18px 40px;
+
+            border-radius: 18px;
+
+            font-size: 17px;
+
+            font-weight: 700;
+
+            cursor: pointer;
+
+            transition: 0.3s;
+
+            box-shadow:
+            0 10px 30px rgba(16,185,129,0.35);
+        }
+
+        .scan-btn:hover {
+
+            transform:
+            translateY(-4px);
+
+            box-shadow:
+            0 14px 35px rgba(16,185,129,0.45);
         }
 
         .footer {
-            margin-top: 60px;
-            font-size: 14px;
+
+            text-align: center;
+
+            margin-top: 40px;
+
             color: #94a3b8;
+
+            font-size: 14px;
         }
+
+        /* TOAST */
+
+        .toast-container {
+
+            position: fixed;
+
+            top: 20px;
+
+            right: 20px;
+
+            z-index: 9999;
+        }
+
+        .toast {
+
+            min-width: 320px;
+
+            padding: 16px 20px;
+
+            border-radius: 16px;
+
+            margin-bottom: 15px;
+
+            color: white;
+
+            font-weight: 500;
+
+            animation: slideIn 0.4s ease;
+
+            box-shadow:
+            0 10px 25px rgba(0,0,0,0.25);
+        }
+
+        .success {
+
+            background:
+            linear-gradient(
+            135deg,
+            #059669,
+            #10b981);
+        }
+
+        .warning {
+
+            background:
+            linear-gradient(
+            135deg,
+            #d97706,
+            #f59e0b);
+        }
+
+        @keyframes slideIn {
+
+            from {
+
+                opacity: 0;
+
+                transform: translateX(100%);
+            }
+
+            to {
+
+                opacity: 1;
+
+                transform: translateX(0);
+            }
+        }
+
+        @media(max-width:768px) {
+
+            .hero h1 {
+
+                font-size: 38px;
+            }
+
+            .dashboard-card {
+
+                padding: 25px;
+            }
+
+            .upload-area {
+
+                padding: 30px 20px;
+            }
+        }
+
     </style>
+
 </head>
 
 <body>
 
-    <div class="container">
+<div class="toast-container"
+     id="toastContainer"></div>
 
-        <div class="logo">🔐 Mobile GRC Security Scanner</div>
-        <div class="subtitle">Vulnerability & Risk Analysis</div>
+<div class="wrapper">
 
-        <div class="card">
-            <form action="/scan" method="post" enctype="multipart/form-data">
+    <div class="hero">
 
-                <label class="upload-label">
-                    📁 Select APK File
-                    <input type="file" name="file" accept=".apk" required />
-                </label>
-
-                <br>
-
-                <button type="submit" class="scan-btn">🚀 Start Scan</button>
-            </form>
+        <div class="badge">
+            <i class="fa-solid fa-shield-halved"></i>
+            ML-Enhanced Mobile Security & Governance Assessment Platform
         </div>
 
-        <div class="footer">
-            © 2026 Mobile GRC — Automated Android Security & Compliance Auditing
+        <h1>
+
+            <span class="gradient-text">
+                ML-Enhanced Governance
+            </span>
+
+            <br>
+
+            & Risk Assessment Scanner
+        </h1>
+
+        <p>
+            Unified Mobile Application Security & Governance platform powered by Static Application Security Testing (SAST), ML-enhanced risk intelligence, compliance mapping, and automated reporting.
+        </p>
+
+    </div>
+
+
+    <div class="dashboard-card">
+
+        <div class="features">
+
+            <div class="feature">
+
+                <div class="icon-box blue">
+                    <i class="fa-solid fa-shield-virus"></i>
+                </div>
+
+                <h3>Security Analysis</h3>
+
+                <p>
+                    Detect Android vulnerabilities,
+                    insecure configurations,
+                    and exposed attack surfaces.
+                </p>
+
+            </div>
+
+            <div class="feature">
+
+                <div class="icon-box green">
+                    <i class="fa-solid fa-brain"></i>
+                </div>
+
+                <h3>ML Risk Prediction</h3>
+
+                <p>
+                    Machine learning powered
+                    intelligent risk severity
+                    and confidence analysis.
+                </p>
+
+            </div>
+
+            <div class="feature">
+
+                <div class="icon-box orange">
+                    <i class="fa-solid fa-chart-pie"></i>
+                </div>
+
+                <h3>Risk Dashboard</h3>
+
+                <p>
+                    Interactive visualization
+                    of vulnerabilities and
+                    severity distributions.
+                </p>
+
+            </div>
+
+            <div class="feature">
+
+                <div class="icon-box purple">
+                    <i class="fa-solid fa-file-shield"></i>
+                </div>
+
+                <h3>Compliance Mapping</h3>
+
+                <p>
+                    ISO27001, GDPR and
+                    OWASP Mobile Top 10
+                    compliance assessment.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="upload-area">
+
+            <div class="upload-title">
+                Upload Android APK
+            </div>
+
+            <div class="upload-sub">
+                Select APK file to perform ML-enhanced
+                vulnerability scanning and governance assessment.
+            </div>
+
+            <form action="/scan"
+                  method="post"
+                  enctype="multipart/form-data"
+                  id="scanForm">
+
+                <label class="upload-btn">
+
+                    <i class="fa-solid fa-cloud-arrow-up"></i>
+
+                    Choose APK File
+
+                    <input type="file"
+                           name="file"
+                           id="apkFile"
+                           accept=".apk"/>
+                </label>
+
+                <div class="file-box"
+                     id="selectedFile">
+
+                    No APK file selected
+
+                </div>
+
+                <button type="submit"
+                        class="scan-btn">
+
+                    🚀 Start Security Scan
+
+                </button>
+
+            </form>
+
         </div>
 
     </div>
+
+    <div class="footer">
+
+        © 2026 Mobile GRC by Astha, Aditi & Gaurav —
+        ML-Enhanced Android Security
+        & Compliance Auditing Platform
+
+    </div>
+
+</div>
+
+
+<script>
+
+    const apkFile =
+    document.getElementById("apkFile");
+
+    const selectedFile =
+    document.getElementById("selectedFile");
+
+    const scanForm =
+    document.getElementById("scanForm");
+
+
+    apkFile.addEventListener(
+        "change",
+
+        function () {
+
+            if (apkFile.files.length > 0) {
+
+                const fileName =
+                apkFile.files[0].name;
+
+                selectedFile.innerHTML =
+                "✅ " + fileName;
+
+                showToast(
+                    "APK selected successfully",
+                    "success"
+                );
+            }
+
+            else {
+
+                selectedFile.innerHTML =
+                "No APK file selected";
+            }
+        }
+    );
+
+
+    scanForm.addEventListener(
+        "submit",
+
+        function (e) {
+
+            if (apkFile.files.length === 0) {
+
+                e.preventDefault();
+
+                showToast(
+                    "Please select APK file before scanning",
+                    "warning"
+                );
+
+                return;
+            }
+
+            showToast(
+                "APK uploaded successfully. Starting scan...",
+                "success"
+            );
+        }
+    );
+
+
+    function showToast(message, type) {
+
+        const container =
+        document.getElementById(
+            "toastContainer"
+        );
+
+        const toast =
+        document.createElement("div");
+
+        toast.classList.add("toast");
+
+        toast.classList.add(type);
+
+        toast.innerHTML = message;
+
+        container.appendChild(toast);
+
+        setTimeout(() => {
+
+            toast.remove();
+
+        }, 5000);
+    }
+
+</script>
 
 </body>
 </html>
