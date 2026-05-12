@@ -1,8 +1,14 @@
 fastapi
 uvicorn
-Jinja2
+jinja2
 matplotlib
 pdfkit
 xhtml2pdf
 python-docx
 androguard
+python-multipart
+joblib
+scikit-learn
+numpy
+scipy
+threadpoolctl
