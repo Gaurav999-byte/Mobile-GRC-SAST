@@ -1,13 +1,13 @@
 import re
 from typing import List, Dict
 
-# optional androguard (real parsing). If not installed, fallback to demo findings.
-try:
-    from androguard.core.bytecodes.apk import APK
-except Exception:
-    APK = None
 
+
+# =========================
+# DANGEROUS PERMISSIONS
+# =========================
 DANGEROUS_PERMS = {
+
     "android.permission.READ_SMS",
     "android.permission.SEND_SMS",
     "android.permission.WRITE_EXTERNAL_STORAGE",
@@ -15,112 +15,399 @@ DANGEROUS_PERMS = {
     "android.permission.CAMERA",
     "android.permission.READ_CONTACTS",
     "android.permission.ACCESS_FINE_LOCATION",
-    "android.permission.READ_CALL_LOG"
+    "android.permission.READ_CALL_LOG",
+    "android.permission.READ_EXTERNAL_STORAGE",
+    "android.permission.WRITE_SETTINGS",
+    "android.permission.SYSTEM_ALERT_WINDOW"
 }
 
+
+# =========================
+# REGEX PATTERNS
+# =========================
 PATTERNS = {
-    "Hardcoded API Keys": r"(?i)(api[_-]?key|secret)[\"'\s:=]{1,5}[A-Za-z0-9_\-]{8,}",
-    "Plaintext HTTP": r"http://",
-    "Weak Cryptography": r"(?i)\b(md5|sha1)\b",
-    "Insecure Random": r"(?i)(\bSecureRandom\b|Random\.)",
-    "Logging Sensitive Data": r"(?i)(log|print)\(.*(password|token|secret|credit|ssn).*",
-    "App is debuggable": r"(?i)android:debuggable\s*=\s*\"?true\"?",
-    "Backup Enabled": r"(?i)android:allowBackup\s*=\s*\"?true\"?",
-    "WebView JS Enabled": r"(?i)setJavaScriptEnabled\s*\(\s*true\s*\)",
-    "File Path Exposure": r"/sdcard/|/storage/emulated/",
-    "Unencrypted Storage": r"(?i)MODE_WORLD_READABLE|MODE_WORLD_WRITEABLE"
+
+    "Hardcoded API Keys":
+    r"(?i)(api[_-]?key|secret|token)[\"'\s:=]{1,5}[A-Za-z0-9_\-]{8,}",
+
+    "Plaintext HTTP":
+    r"http://",
+
+    "Weak Cryptography":
+    r"(?i)\b(md5|sha1)\b",
+
+    "Insecure Random":
+    r"(?i)(\bSecureRandom\b|Random\.)",
+
+    "Logging Sensitive Data":
+    r"(?i)(log|print)\(.*(password|token|secret).*",
+
+    "WebView JS Enabled":
+    r"(?i)setJavaScriptEnabled\s*\(\s*true\s*\)",
+
+    "File Path Exposure":
+    r"/sdcard/|/storage/emulated/",
+
+    "Unencrypted Storage":
+    r"(?i)MODE_WORLD_READABLE|MODE_WORLD_WRITEABLE"
 }
 
 
+# =========================
+# SEVERITY CLASSIFICATION
+# =========================
 def classify_severity(issue: str) -> str:
-    i = issue.lower()
-    if any(k in i for k in ["critical", "dangerous", "hardcoded", "unencrypt", "weak cryptography", "world_readable"]):
+
+    issue = issue.lower()
+
+    if any(k in issue for k in [
+        "hardcoded",
+        "weak cryptography",
+        "unencrypted",
+        "dangerous permission"
+    ]):
         return "Critical"
-    if any(k in i for k in ["debug", "hardcoded", "dangerous permission"]):
+
+    elif any(k in issue for k in [
+        "debuggable",
+        "exported",
+        "cleartext"
+    ]):
         return "High"
-    if any(k in i for k in ["plaintext", "backup", "webview", "insecure random", "file path"]):
+
+    elif any(k in issue for k in [
+        "backup",
+        "webview",
+        "http",
+        "random"
+    ]):
         return "Medium"
+
     return "Low"
 
 
-def demo_findings(path: str):
-    # sample demo findings if androguard not installed
-    return [
-        {"issue": "App is debuggable", "severity": "High", "evidence": "AndroidManifest.xml"},
-        {"issue": "Hardcoded API Keys", "severity": "Critical", "evidence": "res/values/strings.xml"},
-        {"issue": "Plaintext HTTP", "severity": "Medium", "evidence": "classes.dex"},
-        {"issue": "Insecure Random", "severity": "Medium", "evidence": "utils.java"},
-        {"issue": "Backup Enabled", "severity": "Low", "evidence": "AndroidManifest.xml"}
-    ]
-
-
+# =========================
+# MAIN ANALYZER
+# =========================
+# =========================
+# MAIN ANALYZER
+# =========================
 def analyze_apk(path: str) -> List[Dict]:
+
     findings = []
-    print("[analyzer] called for:", path)
 
-    if APK:
+    print("[analyzer] analyzing:", path)
+
+    # load androguard only during scan
+    try:
+        from androguard.misc import AnalyzeAPK
+    except Exception:
+        AnalyzeAPK = None
+
+    if not AnalyzeAPK:
+
+        return [{
+            "issue": "Androguard not installed",
+            "severity": "Low",
+            "evidence": "Environment"
+        }]
+
+    try:
+
+        a, d, dx = AnalyzeAPK(path)
+
+        print("[analyzer] APK parsed successfully")
+
+        # =========================
+        # PACKAGE INFO
+        # =========================
+        findings.append({
+
+            "issue":
+            f"Package Name: {a.get_package()}",
+
+            "severity":
+            "Low",
+
+            "evidence":
+            "APK Metadata"
+        })
+
+        findings.append({
+
+            "issue":
+            f"Target SDK Version: {a.get_target_sdk_version()}",
+
+            "severity":
+            "Low",
+
+            "evidence":
+            "AndroidManifest.xml"
+        })
+
+        # =========================
+        # DEBUGGABLE
+        # =========================
         try:
-            a = APK(path)
-            try:
-                if a.is_debuggable():
-                    findings.append({"issue": "App is debuggable", "severity": "High", "evidence": "AndroidManifest.xml"})
-            except Exception:
-                pass
 
-            try:
-                for p in a.get_permissions() or []:
-                    if p in DANGEROUS_PERMS:
-                        findings.append({"issue": f"Dangerous permission: {p}", "severity": "High", "evidence": "AndroidManifest.xml"})
-            except Exception:
-                pass
+            if a.is_debuggable():
 
-            try:
-                for fname in a.get_files() or []:
-                    if fname.endswith((".xml", ".smali", ".txt", ".properties", ".java", ".dex")):
-                        try:
-                            content = a.get_file(fname)
-                            if not content:
-                                continue
-                            text = content.decode("utf-8", errors="ignore")
-                            for issue_name, regex in PATTERNS.items():
-                                if re.search(regex, text):
-                                    findings.append({
-                                        "issue": issue_name,
-                                        "severity": classify_severity(issue_name),
-                                        "evidence": fname
-                                    })
-                        except Exception:
+                findings.append({
+
+                    "issue":
+                    "App is debuggable",
+
+                    "severity":
+                    "High",
+
+                    "evidence":
+                    "AndroidManifest.xml"
+                })
+
+        except:
+            pass
+
+        # =========================
+        # BACKUP ENABLED
+        # =========================
+        try:
+
+            manifest = str(
+                a.get_android_manifest_xml()
+            )
+
+            if 'allowBackup="true"' in manifest:
+
+                findings.append({
+
+                    "issue":
+                    "Backup Enabled",
+
+                    "severity":
+                    "Medium",
+
+                    "evidence":
+                    "AndroidManifest.xml"
+                })
+
+        except:
+            pass
+
+        # =========================
+        # CLEARTEXT TRAFFIC
+        # =========================
+        try:
+
+            manifest = str(
+                a.get_android_manifest_xml()
+            )
+
+            if 'usesCleartextTraffic="true"' in manifest:
+
+                findings.append({
+
+                    "issue":
+                    "Cleartext Traffic Enabled",
+
+                    "severity":
+                    "High",
+
+                    "evidence":
+                    "AndroidManifest.xml"
+                })
+
+        except:
+            pass
+
+        # =========================
+        # DANGEROUS PERMISSIONS
+        # =========================
+        try:
+
+            permissions = a.get_permissions()
+
+            for perm in permissions:
+
+                findings.append({
+
+                    "issue":
+                    f"Permission Used: {perm}",
+
+                    "severity":
+                    "Low",
+
+                    "evidence":
+                    "AndroidManifest.xml"
+                })
+
+                if perm in DANGEROUS_PERMS:
+
+                    findings.append({
+
+                        "issue":
+                        f"Dangerous permission detected: {perm}",
+
+                        "severity":
+                        "High",
+
+                        "evidence":
+                        "AndroidManifest.xml"
+                    })
+
+        except:
+            pass
+
+        # =========================
+        # ACTIVITIES
+        # =========================
+        try:
+
+            activities = a.get_activities()
+
+            findings.append({
+
+                "issue":
+                f"Total Activities: {len(activities)}",
+
+                "severity":
+                "Low",
+
+                "evidence":
+                "AndroidManifest.xml"
+            })
+
+        except:
+            pass
+
+        # =========================
+        # SERVICES
+        # =========================
+        try:
+
+            services = a.get_services()
+
+            findings.append({
+
+                "issue":
+                f"Total Services: {len(services)}",
+
+                "severity":
+                "Low",
+
+                "evidence":
+                "AndroidManifest.xml"
+            })
+
+        except:
+            pass
+
+        # =========================
+        # RECEIVERS
+        # =========================
+        try:
+
+            receivers = a.get_receivers()
+
+            findings.append({
+
+                "issue":
+                f"Broadcast Receivers: {len(receivers)}",
+
+                "severity":
+                "Low",
+
+                "evidence":
+                "AndroidManifest.xml"
+            })
+
+        except:
+            pass
+
+        # =========================
+        # FILE SCAN
+        # =========================
+        try:
+
+            for fname in a.get_files():
+
+                if fname.endswith((
+                    ".xml",
+                    ".json",
+                    ".txt"
+                )):
+
+                    try:
+
+                        content = a.get_file(fname)
+
+                        if not content:
                             continue
-            except Exception:
-                pass
 
-        except Exception as exc:
-            print("[analyzer] androguard parse error:", repr(exc))
-            findings = demo_findings(path)
-    else:
-        print("[analyzer] Androguard not installed; using demo findings")
-        findings = demo_findings(path)
+                        text = content.decode(
+                            "utf-8",
+                            errors="ignore"
+                        )
 
-    # dedupe by (issue, evidence)
-    cleaned = []
+                        for issue_name, regex in PATTERNS.items():
+
+                            if re.search(regex, text):
+
+                                findings.append({
+
+                                    "issue":
+                                    issue_name,
+
+                                    "severity":
+                                    classify_severity(
+                                        issue_name
+                                    ),
+
+                                    "evidence":
+                                    fname
+                                })
+
+                    except:
+                        continue
+
+        except:
+            pass
+
+    except Exception as e:
+
+        print("[analyzer ERROR]", repr(e))
+
+        findings.append({
+
+            "issue":
+            "APK Parsing Failure",
+
+            "severity":
+            "Low",
+
+            "evidence":
+            str(e)
+        })
+
+    # =========================
+    # REMOVE DUPLICATES
+    # =========================
+    unique = []
+
     seen = set()
-    for f in findings:
-        if isinstance(f, tuple):
-            try:
-                f = {"issue": str(f[0]), "severity": str(f[1]) if len(f) > 1 else "Medium", "evidence": ""}
-            except Exception:
-                f = {"issue": str(f), "severity": "Medium", "evidence": ""}
-        elif not isinstance(f, dict):
-            f = {"issue": str(f), "severity": "Medium", "evidence": ""}
-        key = (f.get("issue", ""), f.get("evidence", ""))
+
+    for item in findings:
+
+        key = (
+            item.get("issue"),
+            item.get("evidence")
+        )
+
         if key not in seen:
+
             seen.add(key)
-            cleaned.append(f)
 
-    print(f"[analyzer] returning {len(cleaned)} unique findings")
-    return cleaned
+            unique.append(item)
 
+    print(f"[analyzer] returning {len(unique)} findings")
 
-
-
-
+    return unique

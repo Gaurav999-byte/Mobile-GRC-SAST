@@ -5,28 +5,131 @@
     "OWASP_MASVS": "MSTG-ARCH-2",
     "recommendation": "Disable android:debuggable in release builds."
   },
+
   "Hardcoded API Keys": {
     "ISO27001": "A.10.1",
     "GDPR": "Article 32",
     "OWASP_MASVS": "MSTG-STORAGE-1",
     "recommendation": "Remove keys from code; use secure keystore or vault."
   },
+
   "Plaintext HTTP": {
     "ISO27001": "A.13.2",
     "GDPR": "Article 25",
     "OWASP_MASVS": "MSTG-NETWORK-1",
-    "recommendation": "Use HTTPS/TLS; disable HTTP endpoints."
+    "recommendation": "Use HTTPS/TLS and disable HTTP traffic."
   },
+
   "Weak Cryptography": {
     "ISO27001": "A.10.1",
     "GDPR": "Article 32",
-    "OWASP_MASVS": "MSTG-CRYPTO-1",
-    "recommendation": "Avoid MD5/SHA1; use SHA-256 or better."
+    "OWASP_MASVS": "MSTG-CRYPTO-2",
+    "recommendation": "Avoid MD5/SHA1 and use stronger encryption."
   },
+
   "WebView JS Enabled": {
-    "ISO27001": "A.14.2",
+    "ISO27001": "A.14.1",
+    "GDPR": "Article 25",
+    "OWASP_MASVS": "MSTG-PLATFORM-5",
+    "recommendation": "Disable JavaScript unless absolutely necessary."
+  },
+
+  "Dangerous permission detected": {
+    "ISO27001": "A.9.1",
     "GDPR": "Article 32",
-    "OWASP_MASVS": "MSTG-WEBVIEW-1",
-    "recommendation": "Avoid enabling JavaScript in WebView or validate trusted sources."
-  }
+    "OWASP_MASVS": "MSTG-PLATFORM-1",
+    "recommendation": "Review and minimize dangerous permissions."
+  },
+
+  "Permission Used": {
+    "ISO27001": "A.9.1",
+    "GDPR": "Article 25",
+    "OWASP_MASVS": "MSTG-PLATFORM-1",
+    "recommendation": "Verify whether permission usage is necessary."
+  },
+
+  "Cleartext Traffic Enabled": {
+    "ISO27001": "A.13.2",
+    "GDPR": "Article 32",
+    "OWASP_MASVS": "MSTG-NETWORK-1",
+    "recommendation": "Disable cleartext traffic and enforce HTTPS."
+  },
+
+  "Backup Enabled": {
+    "ISO27001": "A.12.3",
+    "GDPR": "Article 32",
+    "OWASP_MASVS": "MSTG-STORAGE-2",
+    "recommendation": "Disable android:allowBackup in production."
+  },
+
+  "Insecure Random": {
+    "ISO27001": "A.10.1",
+    "GDPR": "Article 32",
+    "OWASP_MASVS": "MSTG-CRYPTO-2",
+    "recommendation": "Use secure random number generation methods."
+  },
+
+  "Logging Sensitive Data": {
+    "ISO27001": "A.12.4",
+    "GDPR": "Article 5",
+    "OWASP_MASVS": "MSTG-STORAGE-3",
+    "recommendation": "Do not log passwords, tokens, or sensitive user information."
+  },
+
+  "Unencrypted Storage": {
+    "ISO27001": "A.10.1",
+    "GDPR": "Article 32",
+    "OWASP_MASVS": "MSTG-STORAGE-2",
+    "recommendation": "Encrypt locally stored sensitive data."
+  },
+
+  "File Path Exposure": {
+    "ISO27001": "A.9.4",
+    "GDPR": "Article 25",
+    "OWASP_MASVS": "MSTG-STORAGE-1",
+    "recommendation": "Avoid exposing internal storage paths."
+  },
+
+"Package Name": {
+  "ISO27001": "A.8.1",
+  "GDPR": "Article 30",
+  "OWASP_MASVS": "MSTG-ARCH-1",
+  "recommendation": "Verify application package naming conventions and ownership."
+},
+
+"Target SDK Version": {
+  "ISO27001": "A.14.2",
+  "GDPR": "Article 25",
+  "OWASP_MASVS": "MSTG-PLATFORM-1",
+  "recommendation": "Keep target SDK updated to latest secure Android version."
+},
+
+"Total Activities": {
+  "ISO27001": "A.14.2",
+  "GDPR": "Article 25",
+  "OWASP_MASVS": "MSTG-ARCH-1",
+  "recommendation": "Review exported and unnecessary activities."
+},
+
+"Total Services": {
+  "ISO27001": "A.14.2",
+  "GDPR": "Article 25",
+  "OWASP_MASVS": "MSTG-ARCH-1",
+  "recommendation": "Validate background services and access permissions."
+},
+
+"Broadcast Receivers": {
+  "ISO27001": "A.13.1",
+  "GDPR": "Article 32",
+  "OWASP_MASVS": "MSTG-PLATFORM-2",
+  "recommendation": "Restrict unauthorized broadcast receiver exposure."
+},
+
+"APK Parsing Failure": {
+  "ISO27001": "A.12.6",
+  "GDPR": "Article 32",
+  "OWASP_MASVS": "MSTG-RESILIENCE-1",
+  "recommendation": "Validate APK integrity and structure before analysis."
+}
+
 }

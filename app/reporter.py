@@ -28,23 +28,56 @@ def image_to_base64(image_path):
 # =========================
 # CHART GENERATION
 # =========================
+# =========================
+# CHART GENERATION
+# =========================
 def _generate_chart(findings, out_dir, base_name):
 
-    counts = {"Critical": 0, "High": 0, "Medium": 0, "Low": 0}
+    counts = {
+        "Critical": 0,
+        "High": 0,
+        "Medium": 0,
+        "Low": 0
+    }
 
+    # =========================
+    # COUNT SEVERITIES
+    # =========================
     for f in findings:
+
         sev = f.get("severity", "Medium")
+
         if sev not in counts:
             sev = "Medium"
+
         counts[sev] += 1
 
     labels = ["Critical", "High", "Medium", "Low"]
-    values = [counts[l] for l in labels]
 
-    colors = ["#8B0000", "#FF4500", "#FAD60C", "#32CD32"]
+    values = [counts[label] for label in labels]
 
-    chart_path = os.path.join(out_dir, f"{base_name}_chart.png")
+    # =========================
+    # PREVENT NaN PIE CHART ERROR
+    # =========================
+    if sum(values) == 0:
 
+        values = [1, 1, 1, 1]
+
+    colors = [
+        "#8B0000",
+        "#FF4500",
+        "#FAD60C",
+        "#32CD32"
+    ]
+
+    chart_path = os.path.join(
+        out_dir,
+        f"{base_name}_chart.png"
+    )
+
+    # =========================
+    # CREATE PIE CHART
+    # =========================
     plt.figure(figsize=(7, 7), dpi=150)
 
     plt.pie(
@@ -55,10 +88,16 @@ def _generate_chart(findings, out_dir, base_name):
         startangle=140
     )
 
-    plt.title("Severity Distribution", fontsize=16, fontweight="bold")
+    plt.title(
+        "Severity Distribution",
+        fontsize=16,
+        fontweight="bold"
+    )
 
     plt.tight_layout()
+
     plt.savefig(chart_path)
+
     plt.close()
 
     return chart_path
